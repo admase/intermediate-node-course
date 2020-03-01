@@ -32,7 +32,8 @@ app.post("/users", (req, res) => {
     );
 });
 
-app.route("/users/:id")
+app
+    .route("/users/:id")
     // READ
     .get((req, res) => {
         // User.findById()
@@ -70,23 +71,40 @@ app.route("/users/:id")
                     res.json({
                         success: false,
                         message: err
-                    })
+                    });
                 } else if (!data) {
                     res.json({
                         success: false,
                         message: "Not Found"
-                    })
+                    });
                 } else {
                     res.json({
                         success: true,
                         data: data
-                    })
+                    });
                 }
             }
-        )
+        );
     })
 
 // DELETE
 .delete((req, res) => {
-    // User.findByIdAndDelete()
+    User.findByIdAndDelete(req.params.id, (err, data) => {
+        if (err) {
+            res.json({
+                success: false,
+                message: err
+            });
+        } else if (!data) {
+            res.json({
+                success: false,
+                message: "Not Found"
+            });
+        } else {
+            res.json({
+                success: true,
+                data: data
+            });
+        }
+    });
 });
